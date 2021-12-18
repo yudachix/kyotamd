@@ -30,6 +30,7 @@ interface KyotamdParser {
   parseStringLiteral(input: string, inputOffset: number): KyotamdStringLiteral
   parseCommandArguments(input: string, inputOffset: number): KyotamdCommandArguments
   parseCommand(input: string): KyotamdCommand
+  isIgnoreLine(input: string): boolean
   parse(input: string): KyotamdCommands
 }
 
@@ -125,7 +126,14 @@ const KyotamdParser: KyotamdParser = {
 
       if (char === '\\') {
         backslashCount++
-        value += input[++i]
+
+        const nextChar = input[++i]
+
+        if (nextChar === 'n') {
+          value += '\n'
+        } else {
+          value += nextChar
+        }
 
         continue
       }
@@ -197,12 +205,29 @@ const KyotamdParser: KyotamdParser = {
       arguments: this.parseCommandArguments(input, commandName.length + 1)
     }
   },
+  isIgnoreLine(input) {
+    const inputLength = input.length
+
+    for (let i = 0; i < inputLength; i++) {
+      const char = input[i]
+
+      if (CharSets.UPPERCASE_ALPHABETS.has(char)) {
+        return false
+      }
+
+      if (char === '#') {
+        return true
+      }
+    }
+
+    return true
+  },
   parse(input) {
     const rawCommands = input.split('\n')
     const commands: WritableKyotamdCommands = []
 
     for (const rawCommand of rawCommands) {
-      if (rawCommand.length > 0) {
+      if (!this.isIgnoreLine(rawCommand)) {
         commands.push(this.parseCommand(rawCommand))
       }
     }
@@ -211,4 +236,12 @@ const KyotamdParser: KyotamdParser = {
   }
 }
 
-export { KyotamdParser }
+export {
+  KyotamdCommandArgument,
+  KyotamdCommandArguments,
+  KyotamdCommand,
+  KyotamdCommands,
+  KyotamdParenthesis,
+  KyotamdStringLiteral,
+  KyotamdParser
+}
