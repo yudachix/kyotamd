@@ -1,0 +1,26 @@
+{
+  "name": "kyotamd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yudachix/kyotamd.git"
+  },
+  "author": "yudachix",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yudachix/kyotamd/issues"
+  },
+  "homepage": "https://github.com/yudachix/kyotamd#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
+    "eslint": "^8.5.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  }
+}
